@@ -23,10 +23,13 @@ export async function uploadSharedCard(dataUrl: string): Promise<string> {
 /**
  * Formats a caption and generates the Twitter/X share intent link.
  */
-export function getTwitterShareLink(shareId: string): string {
+export function getTwitterShareLink(shareId: string, userName: string): string {
+  // We MUST link to the unique share page so Twitter scrapes the correct image.
+  // The user sees the URL in the text, but Twitter will use it for the preview card.
   const shareUrl = `${typeof window !== 'undefined' ? window.location.origin : ''}/share/${shareId}`;
-  const text = `Just built my Goa frame 🌴💻\nReady to build, ship and hack at Hacker House Goa 2026.\n\nGenerate yours here:`;
-  const hashtags = 'FrameInGoa';
+  
+  const text = `Just built my Goa frame 🌴💻\n\n👤 ${userName}\n\nReady to build, ship and hack at Hacker House Goa 2026.\nCreate your own Builder Badge:\n`;
+  const hashtags = 'FrameInGoa,HHGoa2026';
 
   return `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(shareUrl)}&hashtags=${hashtags}`;
 }

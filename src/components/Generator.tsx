@@ -56,7 +56,7 @@ export default function Generator() {
         />
 
         {/* Step 3: Export */}
-        <DownloadShare canvas={canvas} photoUploaded={!!photo} />
+        <DownloadShare canvas={canvas} photoUploaded={!!photo} userName={name} />
       </div>
 
       {/* Live Preview Column (Right on Desktop, Top on Mobile) */}

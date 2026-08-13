@@ -8,9 +8,10 @@ import { uploadSharedCard, getTwitterShareLink } from '@/lib/share';
 interface DownloadShareProps {
   canvas: HTMLCanvasElement | null;
   photoUploaded: boolean;
+  userName: string;
 }
 
-export default function DownloadShare({ canvas, photoUploaded }: DownloadShareProps) {
+export default function DownloadShare({ canvas, photoUploaded, userName }: DownloadShareProps) {
   const [isSharing, setIsSharing] = useState(false);
   const [isCopying, setIsCopying] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -35,16 +36,16 @@ export default function DownloadShare({ canvas, photoUploaded }: DownloadSharePr
         setShareId(id);
       }
       
-      const shareUrl = getTwitterShareLink(id);
+      const shareUrl = getTwitterShareLink(id, userName);
       window.open(shareUrl, '_blank', 'noopener,noreferrer');
     } catch (err) {
       console.error(err);
       alert('Failed to generate sharing preview. Opening default share window.');
       // Fallback intent without URL
+      const fallbackText = `Just built my Goa frame 🌴💻\n\n👤 ${userName}\n\nReady to build, ship and hack at Hacker House Goa 2026.\nCreate your own Builder Badge:\n`;
+      const fallbackHashtags = 'FrameInGoa,HHGoa2026';
       window.open(
-        `https://twitter.com/intent/tweet?text=${encodeURIComponent(
-          'Just built my Goa frame 🌴💻\nReady to build, ship and hack at Hacker House Goa 2026.\n#FrameInGoa'
-        )}`,
+        `https://twitter.com/intent/tweet?text=${encodeURIComponent(fallbackText)}&hashtags=${fallbackHashtags}`,
         '_blank'
       );
     } finally {
