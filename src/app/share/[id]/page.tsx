@@ -3,15 +3,20 @@ import { headers } from 'next/headers';
 import Link from 'next/link';
 import { Download, Plus } from 'lucide-react';
 import type { Metadata } from 'next';
+import { list } from '@vercel/blob';
 
 interface SharePageProps {
   params: Promise<{ id: string }>;
 }
 
 async function getCardUrl(id: string) {
-  // We use Catbox to bypass Vercel serverless size limits & env variables.
-  // The ID is the exact filename on Catbox (e.g., xxxxx.jpg)
-  return `https://files.catbox.moe/${id}`;
+  try {
+    const { blobs } = await list({ prefix: `hh-cards/${id}.jpg` });
+    return blobs.length > 0 ? blobs[0].url : null;
+  } catch (error) {
+    console.error('Failed to fetch blob:', error);
+    return null;
+  }
 }
 
 // Generate dynamic metadata for web crawlers/scrapers to support rich cards
