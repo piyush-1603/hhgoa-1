@@ -1,23 +1,36 @@
 import React from 'react';
-import fs from 'fs';
-import path from 'path';
 import { headers } from 'next/headers';
 import Link from 'next/link';
 import { Download, Plus } from 'lucide-react';
 import type { Metadata } from 'next';
+import { list } from '@vercel/blob';
 
 interface SharePageProps {
   params: Promise<{ id: string }>;
 }
 
+async function getCardUrl(id: string) {
+  try {
+    const { blobs } = await list({ prefix: `shares/${id}.png` });
+    return blobs.length > 0 ? blobs[0].url : null;
+  } catch (error) {
+    console.error('Failed to fetch blob:', error);
+    return null;
+  }
+}
+
 // Generate dynamic metadata for web crawlers/scrapers to support rich cards
 export async function generateMetadata({ params }: SharePageProps): Promise<Metadata> {
   const { id } = await params;
-  const headersList = await headers();
-  const host = headersList.get('host') || 'localhost:3000';
-  const protocol = host.includes('localhost') ? 'http' : 'https';
   
-  const ogImageUrl = `${protocol}://${host}/shares/${id}.png`;
+  const ogImageUrl = await getCardUrl(id);
+
+  if (!ogImageUrl) {
+    return {
+      title: "Hacker House Goa 2026 — Builder Card",
+      description: "Card not found.",
+    };
+  }
 
   return {
     title: "Hacker House Goa 2026 — Builder Card",
@@ -47,12 +60,9 @@ export async function generateMetadata({ params }: SharePageProps): Promise<Meta
 export default async function SharePage({ params }: SharePageProps) {
   const { id } = await params;
   
-  // Verify the image file exists locally in our filesystem
-  const sharesDir = path.join(process.cwd(), 'public', 'shares');
-  const filePath = path.join(sharesDir, `${id}.png`);
-  const fileExists = fs.existsSync(filePath);
+  const cardImageUrl = await getCardUrl(id);
 
-  if (!fileExists) {
+  if (!cardImageUrl) {
     return (
       <div className="flex-1 flex flex-col items-center justify-center min-h-[60vh] px-4 text-center">
         <span className="text-4xl mb-4">⚠️</span>
@@ -71,8 +81,6 @@ export default async function SharePage({ params }: SharePageProps) {
       </div>
     );
   }
-
-  const cardImageUrl = `/shares/${id}.png`;
 
   return (
     <div className="flex-1 w-full max-w-md mx-auto px-4 py-8 md:py-12 flex flex-col items-center gap-8 justify-center my-auto">

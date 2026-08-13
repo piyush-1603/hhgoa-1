@@ -53,7 +53,7 @@ export const CLASSIC_TEMPLATE: TemplateConfig = {
     // Cream area between checkerboard bottom (y=1307) and dark bar top (y=1334)
     // Center: ~1320
     x: 556,  // center of photoBox: 295 + 522/2
-    y: 1300,
+    y: 1320,
     fontSize: 48,
   },
   rolePosition: {
