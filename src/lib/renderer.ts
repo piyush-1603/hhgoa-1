@@ -53,8 +53,8 @@ export const CLASSIC_TEMPLATE: TemplateConfig = {
     // Cream area between checkerboard bottom (y=1307) and dark bar top (y=1334)
     // Center: ~1320
     x: 556,  // center of photoBox: 295 + 522/2
-    y: 1320,
-    fontSize: 48,
+    y: 1280,
+    fontSize: 50,
   },
   rolePosition: {
     // Dark blue bar: source y=843-883 → scaled y=1334-1397
@@ -178,13 +178,30 @@ export async function renderCard(
     ctx.fillText('NO PHOTO SELECTED', pb.x + pb.width / 2, pb.y + pb.height / 2 + 30);
   }
 
-  // 3. Draw Name text in the cream area below the photo
+  // 3. Draw Name text on the photo
   const np = config.namePosition;
-  ctx.fillStyle = '#181816';
-  ctx.font = `bold ${np.fontSize}px Caveat, Permanent Marker, Brush Script MT, Pacifico, cursive`;
+
+  // Add drop shadow for extra depth
+  ctx.save();
+  ctx.shadowColor = 'rgba(0, 0, 0, 0.4)';
+  ctx.shadowBlur = 4;
+  ctx.shadowOffsetX = 2;
+  ctx.shadowOffsetY = 2;
+
+  ctx.font = `900 ${np.fontSize}px Outfit, Inter, Roboto, "Helvetica Neue", "Arial Black", sans-serif`;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
+
+  // Heavy white stroke outline so it pops on dark photos
+  ctx.lineWidth = 5;
+  ctx.strokeStyle = '#FFFFFF';
+  ctx.strokeText(options.name || 'Aryan Dev', np.x, np.y);
+
+  // Dark inner text
+  ctx.fillStyle = '#181816';
   ctx.fillText(options.name || 'Aryan Dev', np.x, np.y);
+
+  ctx.restore();
 
   // 4. Draw Role text on the dark blue bar
   const rp = config.rolePosition;
