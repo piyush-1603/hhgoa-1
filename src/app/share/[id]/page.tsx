@@ -11,7 +11,15 @@ interface SharePageProps {
 
 async function getCardUrl(id: string) {
   try {
-    const { blobs } = await list({ prefix: `shares/${id}.png` });
+    // Check for JPG first (the new optimized format)
+    let { blobs } = await list({ prefix: `shares/${id}.jpg` });
+    
+    // Fallback to PNG for older cards that were already generated
+    if (blobs.length === 0) {
+      const pngList = await list({ prefix: `shares/${id}.png` });
+      blobs = pngList.blobs;
+    }
+    
     return blobs.length > 0 ? blobs[0].url : null;
   } catch (error) {
     console.error('Failed to fetch blob:', error);

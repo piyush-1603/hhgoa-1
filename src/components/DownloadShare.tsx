@@ -29,7 +29,8 @@ export default function DownloadShare({ canvas, photoUploaded }: DownloadSharePr
       let id = shareId;
       // If we haven't uploaded it to the local share storage yet, do it now
       if (!id) {
-        const dataUrl = canvas.toDataURL('image/png');
+        // Use JPEG to dramatically reduce file size (prevents Vercel 4.5MB body limit errors)
+        const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
         id = await uploadSharedCard(dataUrl);
         setShareId(id);
       }
@@ -57,7 +58,8 @@ export default function DownloadShare({ canvas, photoUploaded }: DownloadSharePr
     try {
       let id = shareId;
       if (!id) {
-        const dataUrl = canvas.toDataURL('image/png');
+        // Use JPEG to dramatically reduce file size
+        const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
         id = await uploadSharedCard(dataUrl);
         setShareId(id);
       }
