@@ -35,7 +35,7 @@ export default function DownloadShare({ canvas, photoUploaded, userName }: Downl
         id = await uploadSharedCard(dataUrl);
         setShareId(id);
       }
-      
+
       const shareUrl = getTwitterShareLink(id, userName);
       window.open(shareUrl, '_blank', 'noopener,noreferrer');
     } catch (err) {
@@ -64,7 +64,7 @@ export default function DownloadShare({ canvas, photoUploaded, userName }: Downl
         id = await uploadSharedCard(dataUrl);
         setShareId(id);
       }
-      
+
       const url = `${window.location.origin}/share/${id}`;
       await navigator.clipboard.writeText(url);
       setCopied(true);
@@ -90,11 +90,10 @@ export default function DownloadShare({ canvas, photoUploaded, userName }: Downl
         type="button"
         disabled={isDisabled}
         onClick={handleDownload}
-        className={`w-full py-3 border border-neutral-800 rounded font-mono text-sm font-bold flex items-center justify-center gap-2 uppercase tracking-widest shadow-[3px_3px_0px_0px_rgba(18,18,18,1)] active:shadow-[1px_1px_0px_0px_rgba(18,18,18,1)] active:translate-x-[2px] active:translate-y-[2px] transition-all ${
-          isDisabled
+        className={`w-full py-3 border border-neutral-800 rounded font-mono text-sm font-bold flex items-center justify-center gap-2 uppercase tracking-widest shadow-[3px_3px_0px_0px_rgba(18,18,18,1)] active:shadow-[1px_1px_0px_0px_rgba(18,18,18,1)] active:translate-x-[2px] active:translate-y-[2px] transition-all ${isDisabled
             ? 'bg-neutral-100 text-neutral-400 border-neutral-300 shadow-none cursor-not-allowed transform-none'
             : 'bg-[#FF5A36] text-white hover:bg-[#e04f2f] cursor-pointer'
-        }`}
+          }`}
       >
         <Download className="w-4 h-4" />
         Download Card
@@ -107,11 +106,10 @@ export default function DownloadShare({ canvas, photoUploaded, userName }: Downl
           type="button"
           disabled={isDisabled || isSharing}
           onClick={handleShareToX}
-          className={`py-2 px-3 border border-neutral-800 rounded font-mono text-xs font-bold flex items-center justify-center gap-1.5 uppercase tracking-widest shadow-[2px_2px_0px_0px_rgba(18,18,18,1)] active:shadow-[0px_0px_0px_0px_rgba(18,18,18,1)] active:translate-x-[2px] active:translate-y-[2px] transition-all ${
-            isDisabled
+          className={`py-2 px-3 border border-neutral-800 rounded font-mono text-xs font-bold flex items-center justify-center gap-1.5 uppercase tracking-widest shadow-[2px_2px_0px_0px_rgba(18,18,18,1)] active:shadow-[0px_0px_0px_0px_rgba(18,18,18,1)] active:translate-x-[2px] active:translate-y-[2px] transition-all ${isDisabled
               ? 'bg-neutral-50 text-neutral-400 border-neutral-200 shadow-none cursor-not-allowed transform-none'
               : 'bg-[#121212] text-white hover:bg-neutral-800 cursor-pointer'
-          }`}
+            }`}
         >
           {isSharing ? (
             <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -128,11 +126,10 @@ export default function DownloadShare({ canvas, photoUploaded, userName }: Downl
           type="button"
           disabled={isDisabled || isCopying}
           onClick={handleCopyLink}
-          className={`py-2 px-3 border border-neutral-800 rounded font-mono text-xs font-bold flex items-center justify-center gap-1.5 uppercase tracking-widest shadow-[2px_2px_0px_0px_rgba(18,18,18,1)] active:shadow-[0px_0px_0px_0px_rgba(18,18,18,1)] active:translate-x-[2px] active:translate-y-[2px] transition-all ${
-            isDisabled
+          className={`py-2 px-3 border border-neutral-800 rounded font-mono text-xs font-bold flex items-center justify-center gap-1.5 uppercase tracking-widest shadow-[2px_2px_0px_0px_rgba(18,18,18,1)] active:shadow-[0px_0px_0px_0px_rgba(18,18,18,1)] active:translate-x-[2px] active:translate-y-[2px] transition-all ${isDisabled
               ? 'bg-neutral-50 text-neutral-400 border-neutral-200 shadow-none cursor-not-allowed transform-none'
               : 'bg-white text-neutral-800 hover:bg-neutral-50 cursor-pointer'
-          }`}
+            }`}
         >
           {isCopying ? (
             <Loader2 className="w-3.5 h-3.5 animate-spin" />

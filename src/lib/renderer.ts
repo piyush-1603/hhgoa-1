@@ -239,13 +239,43 @@ export function canvasToDataURL(canvas: HTMLCanvasElement): string {
 
 /**
  * Downloads a canvas element as a PNG file.
+ * Uses Web Share API for iOS compatibility, falls back to Object URL.
  */
-export function downloadCanvas(canvas: HTMLCanvasElement, filename: string = 'hacker-house-goa-2026.png') {
-  const dataUrl = canvasToDataURL(canvas);
-  const link = document.createElement('a');
-  link.href = dataUrl;
-  link.download = filename;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+export async function downloadCanvas(canvas: HTMLCanvasElement, filename: string = 'hacker-house-goa-2026.png') {
+  try {
+    // Convert to blob instead of massive Data URL for better memory & iOS support
+    const blob = await canvasToBlob(canvas);
+    const file = new File([blob], filename, { type: 'image/png' });
+
+    // 1. iPhone / iOS native share sheet (The absolute best UX for mobile)
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      try {
+        await navigator.share({
+          files: [file],
+          title: 'Hacker House Goa 2026',
+        });
+        return; // Success!
+      } catch (shareErr: any) {
+        // User cancelled share sheet, just abort silently
+        if (shareErr.name === 'AbortError') return; 
+        console.error('Share API failed, falling back:', shareErr);
+      }
+    }
+
+    // 2. Standard desktop download fallback via Object URL (more stable than base64)
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    // Clean up memory
+    setTimeout(() => URL.revokeObjectURL(url), 100);
+
+  } catch (err) {
+    console.error('Download mechanism failed:', err);
+    alert('Failed to download image. Try sharing to X or copying the link instead!');
+  }
 }

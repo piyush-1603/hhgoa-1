@@ -20,7 +20,7 @@ export default function PhotoUploader({ onPhotoSelected }: PhotoUploaderProps) {
     try {
       // Handle HEIC to PNG conversion dynamically on the client
       const convertedFile = await convertHeicToPng(file);
-      
+
       const reader = new FileReader();
       reader.onload = (e) => {
         if (e.target?.result && typeof e.target.result === 'string') {
@@ -78,17 +78,16 @@ export default function PhotoUploader({ onPhotoSelected }: PhotoUploaderProps) {
         accept="image/png, image/jpeg, image/jpg, image/heic, image/heif"
         className="hidden"
       />
-      
+
       <div
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
         onClick={triggerFileInput}
-        className={`w-full min-h-[160px] border border-dashed rounded p-6 flex flex-col items-center justify-center cursor-pointer transition-all duration-200 ${
-          isDragging
+        className={`w-full min-h-[160px] border border-dashed rounded p-6 flex flex-col items-center justify-center cursor-pointer transition-all duration-200 ${isDragging
             ? 'border-orange-500 bg-orange-50/20'
             : 'border-neutral-300 hover:border-neutral-400 bg-white/40 hover:bg-white/60'
-        }`}
+          }`}
       >
         {isLoading ? (
           <div className="flex flex-col items-center gap-3">
@@ -121,7 +120,7 @@ export default function PhotoUploader({ onPhotoSelected }: PhotoUploaderProps) {
           </div>
         )}
       </div>
-      
+
       {error && (
         <p className="mt-2 text-xs text-red-500 font-mono uppercase tracking-wider">
           ⚠️ {error}

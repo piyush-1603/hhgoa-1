@@ -79,8 +79,8 @@ export default function UserDetailsForm({
               type="button"
               onClick={() => onRoleChange(qr)}
               className={`text-[8px] font-mono px-2 py-0.5 rounded border uppercase tracking-wider transition-colors ${role.toLowerCase() === qr.toLowerCase()
-                  ? 'bg-neutral-800 text-white border-neutral-800 font-bold'
-                  : 'bg-neutral-50 text-neutral-500 border-neutral-200 hover:border-neutral-300'
+                ? 'bg-neutral-800 text-white border-neutral-800 font-bold'
+                : 'bg-neutral-50 text-neutral-500 border-neutral-200 hover:border-neutral-300'
                 }`}
             >
               {qr}
